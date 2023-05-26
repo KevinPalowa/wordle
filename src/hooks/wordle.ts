@@ -9,6 +9,7 @@ const useWordle = () => {
   const [maxAttempts] = useState(6);
   const [isGameOver, setIsGameOver] = useState(false);
   const [isYouWin, setIsYouWin] = useState(false);
+  const [yourGuessed, setYourGuessed] = useState<string[]>([]);
 
   useEffect(() => {
     if (attempts >= maxAttempts) {
@@ -17,13 +18,10 @@ const useWordle = () => {
   }, [attempts, maxAttempts]);
 
   const checkGuess = () => {
-    // Add your logic here to check the guess against the word
-    // and update the attempts, game over state, etc.
-    // This could involve comparing the letters, tracking correct
-    // and incorrect guesses, etc.
     const isAnswerAllowed = allowed.has(guess);
     if (isAnswerAllowed) {
       setGuess("");
+      setYourGuessed([...yourGuessed, guess]);
       setAttempts(attempts + 1);
       if (word === guess) {
         setIsYouWin(true);
@@ -34,6 +32,7 @@ const useWordle = () => {
   const resetGame = () => {
     setWord(getRandomWords());
     setGuess("");
+    setYourGuessed([]);
     setAttempts(0);
     setIsGameOver(false);
     setIsYouWin(false);
@@ -50,6 +49,7 @@ const useWordle = () => {
     checkGuess,
     resetGame,
     isYouWin,
+    yourGuessed,
   };
 };
 
