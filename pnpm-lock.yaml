@@ -7,6 +7,7 @@ specifiers:
   '@typescript-eslint/parser': ^5.57.1
   '@vitejs/plugin-react-swc': ^3.0.0
   autoprefixer: ^10.4.14
+  clsx: ^1.2.1
   eslint: ^8.38.0
   eslint-plugin-react-hooks: ^4.6.0
   eslint-plugin-react-refresh: ^0.3.4
@@ -19,6 +20,7 @@ specifiers:
 
 dependencies:
   autoprefixer: 10.4.14_postcss@8.4.23
+  clsx: 1.2.1
   postcss: 8.4.23
   react: 18.2.0
   react-dom: 18.2.0_react@18.2.0
@@ -775,6 +777,11 @@ packages:
       readdirp: 3.6.0
     optionalDependencies:
       fsevents: 2.3.2
+    dev: false
+
+  /clsx/1.2.1:
+    resolution: {integrity: sha512-EcR6r5a8bj6pu3ycsa/E/cKVGuTgZJZdsyUYHOksG/UHIiKfjxzRxYJpyVBwYaQeOvghal9fcc4PidlgzugAQg==}
+    engines: {node: '>=6'}
     dev: false
 
   /color-convert/2.0.1:

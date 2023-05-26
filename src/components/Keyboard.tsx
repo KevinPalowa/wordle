@@ -1,59 +1,88 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect } from "react";
 import Button from "./Button";
 
-function Keyboard() {
-  const [keyPressed, setKeyPressed] = useState("");
+type Props = {
+  onSubmit: (data: string) => void;
+  value: string;
+  setValue: React.Dispatch<React.SetStateAction<string>>;
+  disabled?: boolean;
+};
+function Keyboard({ onSubmit, setValue, value, disabled }: Props) {
+  const handleKeyDown = useCallback(
+    (event: string) => {
+      setValue((prev) => {
+        if (event === "Backspace") return prev.slice(0, -1);
+        if (event === "Enter") {
+          onSubmit(value);
+          return "";
+        }
+        if (prev.length >= 5) return prev;
+        if (event.length === 1) return prev + event;
+
+        return prev;
+      });
+    },
+    [onSubmit, setValue, value]
+  );
   useEffect(() => {
-    const handleKeyPress = (event: KeyboardEvent) => {
-      // Handle the keypress event here
-      setKeyPressed(event.key);
+    const onKeyDown = (event: KeyboardEvent) => {
+      const isKeyAlphabet = !event.code.includes("Digit");
+      if (isKeyAlphabet && !disabled) return handleKeyDown(event.key);
     };
+    window.addEventListener("keydown", onKeyDown);
 
-    // Add the keypress event listener when the component mounts
-    window.addEventListener("keypress", handleKeyPress);
-
-    // Clean up the event listener when the component unmounts
     return () => {
-      window.removeEventListener("keypress", handleKeyPress);
+      window.removeEventListener("keydown", onKeyDown);
     };
-  }, []);
-  console.log(keyPressed);
+  }, [disabled, handleKeyDown]);
   return (
     <div className="space-y-2">
       <div className="space-x-2 flex">
         {"qwertyuiop".split("").map((alphabet) => (
           <Button
-            className={`flex-1 ${
-              keyPressed === alphabet && "border border-black"
-            }`}
+            className={`flex-1 uppercase`}
+            onClick={() => handleKeyDown(alphabet)}
+            key={alphabet}
+            disabled={disabled}
           >
-            {alphabet.toUpperCase()}
+            {alphabet}
           </Button>
         ))}
+        <Button
+          className={`flex-1`}
+          onClick={() => handleKeyDown("Backspace")}
+          disabled={disabled}
+        >
+          Backspace
+        </Button>
       </div>
 
       <div className="space-x-2 flex">
         {"asdfghjkl".split("").map((alphabet) => (
           <Button
-            className={`flex-1 ${
-              keyPressed === alphabet && "border border-black"
-            }`}
+            className={`flex-1 uppercase`}
+            disabled={disabled}
+            onClick={() => handleKeyDown(alphabet)}
+            key={alphabet}
           >
-            {alphabet.toUpperCase()}
+            {alphabet}
           </Button>
         ))}
       </div>
       <div className="space-x-2 flex">
         {"zxcvbnm".split("").map((alphabet) => (
           <Button
-            className={`flex-1 ${
-              keyPressed === alphabet && "border border-black"
-            }`}
+            disabled={disabled}
+            className={`flex-1 uppercase`}
+            onClick={() => handleKeyDown(alphabet)}
+            key={alphabet}
           >
-            {alphabet.toUpperCase()}
+            {alphabet}
           </Button>
         ))}
-        <Button>ENTER</Button>
+        <Button onClick={() => handleKeyDown("Enter")} disabled={disabled}>
+          Enter
+        </Button>
       </div>
     </div>
   );
