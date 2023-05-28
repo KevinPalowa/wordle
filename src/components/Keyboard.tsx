@@ -12,15 +12,18 @@ function Keyboard({ onSubmit, setValue, value, disabled }: Props) {
   const handleKeyDown = useCallback(
     (event: string) => {
       setValue((prev) => {
-        if (event === "Backspace") return prev.slice(0, -1);
-        if (event === "Enter") {
-          onSubmit(value);
-          return "";
+        switch (event) {
+          case "Backspace":
+            return prev.slice(0, -1);
+          case "Enter":
+            onSubmit(value);
+            return "";
+          default:
+            if (prev.length >= 5 || event.length !== 1) {
+              return prev;
+            }
+            return prev + event;
         }
-        if (prev.length >= 5) return prev;
-        if (event.length === 1) return prev + event;
-
-        return prev;
       });
     },
     [onSubmit, setValue, value]
