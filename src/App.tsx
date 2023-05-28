@@ -4,7 +4,6 @@ import useWordle from "./hooks/wordle";
 
 function App() {
   const wordle = useWordle();
-  console.log(wordle);
   return (
     <div className="container mx-auto max-w-3xl">
       <button onClick={() => wordle.resetGame()}>Reset The game</button>

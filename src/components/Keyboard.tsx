@@ -1,4 +1,4 @@
-import { useCallback, useEffect } from "react";
+import { useCallback, useEffect, useRef } from "react";
 import Button from "./Button";
 
 type Props = {
@@ -8,6 +8,7 @@ type Props = {
   disabled?: boolean;
 };
 function Keyboard({ onSubmit, setValue, value, disabled }: Props) {
+  const enterButtonRef = useRef<HTMLButtonElement>(null);
   const handleKeyDown = useCallback(
     (event: string) => {
       setValue((prev) => {
@@ -25,6 +26,11 @@ function Keyboard({ onSubmit, setValue, value, disabled }: Props) {
     [onSubmit, setValue, value]
   );
   useEffect(() => {
+    if (value.length === 5 && enterButtonRef.current) {
+      enterButtonRef.current.focus();
+    }
+  }, [value.length]);
+  useEffect(() => {
     const onKeyDown = (event: KeyboardEvent) => {
       const isKeyAlphabet = !event.code.includes("Digit");
       if (isKeyAlphabet && !disabled) return handleKeyDown(event.key);
@@ -36,7 +42,7 @@ function Keyboard({ onSubmit, setValue, value, disabled }: Props) {
     };
   }, [disabled, handleKeyDown]);
   return (
-    <div className="space-y-2">
+    <div className="space-y-2 mx-5 md:mx-0">
       <div className="space-x-2 flex">
         {"qwertyuiop".split("").map((alphabet) => (
           <Button
@@ -69,7 +75,7 @@ function Keyboard({ onSubmit, setValue, value, disabled }: Props) {
           </Button>
         ))}
       </div>
-      <div className="space-x-2 flex">
+      <div className="space-x-2 flex w-full">
         {"zxcvbnm".split("").map((alphabet) => (
           <Button
             disabled={disabled}
@@ -80,7 +86,12 @@ function Keyboard({ onSubmit, setValue, value, disabled }: Props) {
             {alphabet}
           </Button>
         ))}
-        <Button onClick={() => handleKeyDown("Enter")} disabled={disabled}>
+        <Button
+          onClick={() => handleKeyDown("Enter")}
+          disabled={disabled}
+          ref={enterButtonRef}
+          className="flex-1"
+        >
           Enter
         </Button>
       </div>
