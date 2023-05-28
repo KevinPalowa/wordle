@@ -18,12 +18,8 @@ function App() {
             <WordBox
               key={horizontalIndex}
               variant={
-                (wordle.guess[horizontalIndex] ===
-                  wordle.word[horizontalIndex] &&
-                  wordle.attempts === verticalIndex &&
-                  wordle.guess[horizontalIndex]) ||
                 wordle.yourGuessed[verticalIndex]?.[horizontalIndex] ===
-                  wordle.word[horizontalIndex]
+                wordle.word[horizontalIndex]
                   ? "success"
                   : "base"
               }
