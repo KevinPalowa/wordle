@@ -45,7 +45,7 @@ function Keyboard({ onSubmit, setValue, value, disabled }: Props) {
     };
   }, [disabled, handleKeyDown]);
   return (
-    <div className="space-y-2 mx-5 md:mx-0">
+    <div className="space-y-2">
       <div className="space-x-2 flex">
         {"qwertyuiop".split("").map((alphabet) => (
           <Button

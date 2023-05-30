@@ -4,29 +4,33 @@ import useWordle from "./hooks/wordle";
 
 function App() {
   const wordle = useWordle();
+  const getClassName = (param: string): "base" | "warning" | "success" => {
+    switch (param) {
+      case "x":
+        return "success";
+      case "c":
+        return "warning";
+      default:
+        return "base";
+    }
+  };
   return (
     <div className="container mx-auto max-w-3xl">
       <button onClick={() => wordle.resetGame()}>Reset The game</button>
-      <p>{`Your Attempt: ${wordle.attempts}`}</p>
-      <p>{`The Word is: ${wordle.word}`}</p>
-      <p>{`The History Word is: ${wordle.yourGuessed.join(", ")}`}</p>
       <p>{wordle.isYouWin && "Kamu Menang!!!"}</p>
       <p>{wordle.isGameOver && "Game Over :(("}</p>
       <div className="grid grid-cols-5 gap-2 max-w-xs mx-auto my-5">
-        {Array.from(Array(6).keys()).map((verticalIndex) =>
+        {Array.from(Array(wordle.maxAttempts).keys()).map((verticalIndex) =>
           Array.from(Array(5).keys()).map((horizontalIndex) => (
             <WordBox
               key={horizontalIndex}
-              variant={
-                wordle.yourGuessed[verticalIndex]?.[horizontalIndex] ===
-                wordle.word[horizontalIndex]
-                  ? "success"
-                  : "base"
-              }
+              variant={getClassName(
+                wordle.yourGuessed[verticalIndex]?.state[horizontalIndex]
+              )}
             >
               {wordle.attempts === verticalIndex &&
                 wordle.guess[horizontalIndex]}
-              {wordle.yourGuessed[verticalIndex]?.[horizontalIndex]}
+              {wordle.yourGuessed[verticalIndex]?.word[horizontalIndex]}
             </WordBox>
           ))
         )}

@@ -1,11 +1,11 @@
 import clsx from "clsx";
 import { ReactNode } from "react";
 
-type Props = { children?: ReactNode; variant?: "success" | "error" | "base" };
+type Props = { children?: ReactNode; variant?: "success" | "warning" | "base" };
 export function WordBox({ children, variant = "base" }: Props) {
   const colorVariant = clsx({
     "bg-green-300": variant === "success",
-    "bg-red-200": variant === "error",
+    "bg-yellow-200": variant === "warning",
     "bg-gray-200": variant === "base",
   });
   return (
