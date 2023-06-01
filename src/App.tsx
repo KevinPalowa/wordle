@@ -4,7 +4,13 @@ import useWordle from "./hooks/wordle";
 
 function App() {
   const wordle = useWordle();
-  const getClassName = (param: string): "base" | "warning" | "success" => {
+  const getClassName = (
+    param: string,
+    isActive: boolean
+  ): "base" | "warning" | "success" | "secondary" => {
+    if (isActive) {
+      return "secondary";
+    }
     switch (param) {
       case "x":
         return "success";
@@ -25,7 +31,8 @@ function App() {
             <WordBox
               key={horizontalIndex}
               variant={getClassName(
-                wordle.yourGuessed[verticalIndex]?.state[horizontalIndex]
+                wordle.yourGuessed[verticalIndex]?.state[horizontalIndex],
+                wordle.attempts === verticalIndex
               )}
             >
               {wordle.attempts === verticalIndex &&
